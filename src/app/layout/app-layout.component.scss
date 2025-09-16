@@ -1,0 +1,60 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+}
+
+.layout-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: row; /* pastikan horizontal */
+}
+
+.layout-sidebar {
+  flex-shrink: 0; /* jangan mengecil */
+  width: var(--width-sidebar);
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  transition: width 0.3s ease;
+}
+
+.layout-main-container {
+  flex: 1; /* isi sisa ruang */
+  margin-left: var(--width-sidebar);
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.layout-main {
+  flex-grow: 1;
+  padding: 1.5rem;
+  background-color: #f2f4f9;
+  border-top: 1px solid var(--color-border);
+}
+
+.layout-bottom-nav {
+  display: none; // Hanya tampil di mobile
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .layout-sidebar {
+    display: none !important;
+  }
+
+  .layout-main-container {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .layout-main {
+    padding-bottom: calc(var(--height-bottom-nav) + 1rem);
+  }
+
+  .layout-bottom-nav {
+    display: block;
+  }
+}

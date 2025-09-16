@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+
+:root {
+    /* --- PALETTE WARNA (COLORS) --- */
+    --color-primary: #009ef7;
+    --color-primary-light: #f1faff;
+    --color-text-dark: #3f4254;
+    --color-text-light: #a1a5b7;
+    --color-bg-content: #F3F5F9;
+    --color-border: #eff2f5;
+
+    /* --- warna per level --- */
+     --color-level-1: #009ef7;
+    /* Biru (Primary) */
+    --color-level-2: #50cd89;
+    /* Hijau (Success) */
+    --color-level-3: #ffc700;
+    /* Kuning (Warning) */
+    --color-level-4: #ff9800;
+    /* Oranye */
+
+    /* Warna terang untuk latar belakang item summary */
+    --color-naz-1: #f1416c;
+    /* merah */
+    --color-naz-2: #ff9800;
+    /* oranye */
+    --color-naz-3: #ffc700;
+    /* kuning */
+
+    /* --- UKURAN & JARAK (SIZING) --- */
+    --width-sidebar: 280px;
+    --height-header: 70px;
+    --height-bottom-nav: 65px;
+
+    /* --- TIPOGRAFI (TYPOGRAPHY) --- */
+    --font-main: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: #ffffff;
+    color: var(--color-text-dark);
+    margin: 0;
+}
+
+/* Tambahkan gaya global lain yang diperlukan */
+.p-sidebar {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.p-component {
+    font-family: var(--font-main) !important;
+}

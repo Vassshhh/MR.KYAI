@@ -1,0 +1,24 @@
+<div class="layout-wrapper">
+    <app-sidebar class="layout-sidebar"></app-sidebar>
+
+    <div class="layout-main-container">
+        <app-header></app-header>
+        <main class="layout-main">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+
+    <app-bottom-nav class="layout-bottom-nav"></app-bottom-nav>
+
+    <p-sidebar [visible]="(layoutService.mobileSidebarVisible$ | async)!" (visibleChange)="layoutService.toggleMobileSidebar()" position="left">
+        <ng-template pTemplate="header">
+            <div class="sidebar-header">
+                <a routerLink="/dashboard" class="logo-wrapper">
+                    <img src="/logo_pemprov_jatim.png" alt="Logo" class="logo-img">
+                    <span class="logo-text">BAPENDA</span>
+                </a>
+            </div>
+        </ng-template>
+        <app-sidebar (click)="layoutService.toggleMobileSidebar()"></app-sidebar>
+    </p-sidebar>
+</div>

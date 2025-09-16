@@ -1,0 +1,939 @@
+// === Overview Cards Layout ===
+.overview-card {
+  .p-card-body {
+    padding: 1rem !important; // Mengurangi padding untuk membuat kartu lebih kecil
+  }
+}
+
+.overview-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem; // Jarak antara icon dan teks
+  
+  &.combine {
+    // Khusus untuk layout horizontal (icon di kiri, teks di kanan)
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.overview-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  .card-title {
+    font-size: 0.875rem; // 14px
+    font-weight: 500;
+    color: var(--color-text-light, #6c757d);
+    margin: 0 0 0.25rem 0;
+    line-height: 1.2;
+  }
+  
+  .card-value {
+    font-size: 1.5rem; // 24px
+    font-weight: 700;
+    color: var(--color-text-dark, #1a1a1a);
+    margin: 0;
+    line-height: 1.1;
+  }
+}
+
+// === Icon Circle untuk Overview ===
+.icon-circle {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0; // Mencegah icon mengecil
+  
+  &.primary {
+    background-color: var(--color-primary, #3b82f6);
+    color: #fff;
+  }
+  
+  &.secondary {
+    background-color: var(--color-secondary, #10b981);
+    color: #fff;
+  }
+  
+  i {
+    font-size: 1.25rem;
+  }
+}
+
+// === Responsif untuk Overview Cards ===
+@media (max-width: 768px) {
+  .overview-content {
+    gap: 0.75rem;
+  }
+  
+  .icon-circle {
+    width: 50px;
+    height: 50px;
+    
+    i {
+      font-size: 1rem;
+    }
+  }
+  
+  .overview-text {
+    .card-title {
+      font-size: 1rem;
+    }
+    
+    .card-value {
+      font-size: 1.75rem;
+    }
+  }
+}
+
+// === Existing CSS yang sudah ada sebelumnya ===
+// (Tetap pertahankan semua CSS lainnya yang sudah ada)
+
+// --- PERBAIKAN KUNCI ---
+// Menggunakan ::ng-deep untuk "memaksa" style masuk ke dalam komponen <p-card>
+:host ::ng-deep .p-card {
+    border-radius: var(--border-radius-medium);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    border: none !important;
+    height: 100%; // Membuat semua kartu dalam satu baris sama tinggi
+
+    .p-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    .p-card-body {
+        padding: 1.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 0.40rem;
+    }
+
+    .p-card-content {
+        padding: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+}
+
+// Override khusus untuk overview cards agar lebih kecil
+:host ::ng-deep .overview-card .p-card-body {
+    padding: 1rem !important; // Padding lebih kecil untuk overview cards
+}
+
+// === Layout utama untuk progress stepper + top topics ===
+.leveling-topics {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.left-card {
+    flex: 1 1 calc(50% - 0.75rem);
+    min-width: 300px;
+}
+
+.right-card {
+    flex: 1 1 calc(50% - 0.75rem);
+    min-width: 250px;
+}
+
+// === Layout untuk semua baris 2 kolom ===
+.two-col-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; // jarak antar card
+}
+
+.two-col-flex > ::ng-deep .p-card {
+    flex: 1 1 calc(50% - 0.75rem); // tiap card ambil 50% lebar dengan gap
+    box-sizing: border-box;
+    min-width: 280px; // minimum width untuk responsive
+}
+
+// === Alternative: Gunakan class yang sama untuk konsistensi ===
+.flex-container {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.flex-container > * {
+    flex: 1 1 calc(50% - 0.75rem);
+    box-sizing: border-box;
+    min-width: 280px;
+}
+
+// === Judul utama halaman ===
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-dark);
+    margin-bottom: 1.5rem;
+}
+
+// === Jarak antar baris grid ===
+.dashboard-grid > .col-12 {
+    margin-bottom: 1.5rem;
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// === Judul di dalam Header Kartu ===
+.card-header-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+// === Top Topics Card ===
+.icon-circle-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-top-1-light);
+    color: var(--color-top-1);
+    i {
+        font-size: 1.25rem;
+    }
+}
+
+/* Top Topics khusus: lingkaran merah, icon putih */
+.icon-circle-sm.top-topic {
+    background-color: var(--color-naz-1, #f1416d); /* merah naz-1 */
+    color: #fff; /* icon putih */
+    margin-right: 1rem;
+    i {
+        color: #fff;
+    }
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between; /* teks di kiri, value di kanan */
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--border-radius-medium);
+    background-color: #f9f9f9;
+}
+
+.summary-bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.summary-text {
+    flex-grow: 1;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.summary-value {
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: right;
+    white-space: nowrap;
+}
+
+// === Progress Stepper & Level Info ===
+.progress-stepper {
+    
+    input[type="radio"] { display: none; }
+}
+
+.progress-steps-wrapper {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 0.5rem;
+}
+
+.stepper-label {
+    font-weight: 500;
+    color: var(--color-text-light);
+    transition: color 0.4s ease;
+    font-size: 0.9rem; /* Example font size */
+}
+
+.progress-stepper__step {
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    width: 20%;
+    
+    i {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: var(--color-text-light);
+        margin: 0 auto 0.5rem auto;
+        transition: all 0.4s ease;
+        z-index: 2;
+        position: relative;
+    }
+}
+
+.leveling-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Adjust gap as needed */
+
+    .left-card, .right-card {
+        flex: 1 1 calc(50% - 0.75rem); /* Each card takes 50% width minus half the gap */
+        min-width: 280px; /* Ensure a minimum width for responsiveness */
+    }
+}
+
+// === Logic untuk step aktif ===
+@for $i from 1 through 5 {
+    input[type="radio"]:nth-of-type(#{$i}):checked ~ .progress-steps-wrapper .progress-stepper__step:nth-of-type(#{$i}) {
+        i {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        span {
+            color: var(--color-primary);
+        }
+    }
+}
+
+.level-info-container {
+    text-align: center;
+    padding: 2rem 1rem 0 1rem;
+    min-height: 150px;
+
+    h4 {
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: var(--color-text-dark);
+        font-size: 1.3rem;
+    }
+}
+
+.level-tasks {
+    font-size: 14px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    color: var(--color-text-light);
+    line-height: 1.6;
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+}
+
+// === Chart Styling - Platform Access ===
+:host ::ng-deep .p-chart {
+  .p-chart-canvas {
+    background: transparent !important;
+  }
+}
+
+// Menghilangkan grid lines dan styling chart
+:host ::ng-deep canvas {
+  background: transparent !important;
+}
+
+// === Responsive breakpoints ===
+@media (max-width: 768px) {
+    .leveling-topics {
+        flex-direction: column;
+    }
+    
+    .left-card, .right-card {
+        flex: 1 1 100%;
+    }
+    
+    .two-col-flex {
+        flex-direction: column;
+        
+        > ::ng-deep .p-card {
+            flex: 1 1 100%;
+        }
+    }
+
+    .summary-value {
+        margin-right: 0.75rem; // lebih kecil di layar kecil
+    }
+}
+
+.h6-style {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #a1a5b7;
+}
+
+// === Icon Circle Umum ===
+.icon-circle, .icon-circle-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white; // Default text/icon color
+    i {
+        font-size: 1.5rem; // Ukuran ikon bisa disesuaikan
+    }
+}
+
+// === Icon Circle Style ===
+.circlecolor {
+    &.nat-1 {
+    color: var(--color-naz-1, #f1416d);
+  }
+
+  &.nat-2 {
+    color: var(--color-naz-2, #ff9900);
+  }
+
+  &.nat-3 {
+    color: var(--color-naz-3, #ffc800);
+  }
+
+  font-size: 0.5rem;
+}
+
+.litle-circle i.pi-circle-fill {
+  font-size: 0.5rem !important;
+  width: auto;
+  height: auto;
+  line-height: 1;
+}
+
+.icon-circle-sm {
+  width: 40px;
+  height: 40px;
+  &.top-1 {
+    background-color: var(--color-naz-1);
+  }
+  &.top-2 {
+    background-color: var(--color-naz-2);
+  }
+  &.top-3 {
+    background-color: var(--color-naz-3);
+  }
+}
+
+// Default summary item
+.summary-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: var(--border-radius-medium);
+  
+  transition: background-color 0.3s ease;
+
+  &.naz-1 {
+    background-color:  #f1416d38;
+    border-radius: 0.65rem;
+    margin-top: 1.5rem;
+  }
+
+  &.naz-2 {
+    background-color:#ff99003a;
+    border-radius: 0.65rem;
+  }
+
+  &.naz-3 {
+    background-color: #ffc8003c;
+    border-radius: 0.65rem;
+  }
+}
+
+/* Tiny Dot: Sejajarkan dot dengan teks */
+.tiny-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: currentColor;
+  margin-right: 0.5rem !important;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle; /* Sejajarkan dengan teks */
+}
+
+/* Dot Colors */
+.tiny-dot.nat-1 {
+  color: var(--color-naz-1, #f1416d);
+}
+
+.tiny-dot.nat-2 {
+  color: var(--color-naz-2, #ff9900);
+}
+
+.tiny-dot.nat-3 {
+  color: var(--color-naz-3, #ffc800);
+}
+
+/* Hilangkan padding default UL dan LI */
+ul.list-none {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.summary-item {
+  padding: 1rem 1.5rem; /* Kurangi jarak dari kiri */
+}
+
+/* Pastikan span flex sejajar */
+.summary-item > span.flex {
+  align-items: center;
+}
+
+.itop {
+    align-items: center;
+}
+
+.top-pic {
+    font-size: 1.25rem;
+    font-weight: 700;
+    justify-content: center;
+}
+
+.progress-steps-wrapper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 2rem ;
+}
+
+.progress-stepper__step {
+  position: relative;
+  text-align: center;
+  flex: 1;
+}
+
+.progress-stepper__step i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 auto 0.5rem auto;
+  z-index: 1;
+  position: relative;
+  color: #fff;
+  background: #6c757d; /* Default abu-abu */
+  font-weight: 700;
+}
+
+/* Garis default abu-abu */
+.progress-stepper__step::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: -50%;
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-border);
+  z-index: 0;
+}
+.progress-stepper__step:first-child::before { content: none; }
+
+/* === WARNA PER LEVEL (HANYA AKTIF) === */
+#step-1:checked ~ .progress-steps-wrapper label[for="step-1"] i {
+  background: var(--color-level-1);
+}
+
+#step-2:checked ~ .progress-steps-wrapper label[for="step-1"] i {
+  background: var(--color-level-1);
+}
+#step-2:checked ~ .progress-steps-wrapper label[for="step-2"] i {
+  background: var(--color-level-2);
+}
+#step-2:checked ~ .progress-steps-wrapper label[for="step-2"]::before {
+  background: var(--color-level-2);
+}
+
+#step-3:checked ~ .progress-steps-wrapper label[for="step-1"] i {
+  background: var(--color-level-1);
+}
+#step-3:checked ~ .progress-steps-wrapper label[for="step-2"] i {
+  background: var(--color-level-2);
+}
+#step-3:checked ~ .progress-steps-wrapper label[for="step-2"]::before {
+  background: var(--color-level-2);
+}
+#step-3:checked ~ .progress-steps-wrapper label[for="step-3"] i {
+  background: var(--color-level-3);
+}
+#step-3:checked ~ .progress-steps-wrapper label[for="step-3"]::before {
+  background: var(--color-level-3);
+}
+
+#step-4:checked ~ .progress-steps-wrapper label[for="step-1"] i {
+  background: var(--color-level-1);
+}
+#step-4:checked ~ .progress-steps-wrapper label[for="step-2"] i {
+  background: var(--color-level-2);
+}
+#step-4:checked ~ .progress-steps-wrapper label[for="step-2"]::before {
+  background: var(--color-level-2);
+}
+#step-4:checked ~ .progress-steps-wrapper label[for="step-3"] i {
+  background: var(--color-level-3);
+}
+#step-4:checked ~ .progress-steps-wrapper label[for="step-3"]::before {
+  background: var(--color-level-3);
+}
+#step-4:checked ~ .progress-steps-wrapper label[for="step-4"] i {
+  background: var(--color-level-4);
+}
+#step-4:checked ~ .progress-steps-wrapper label[for="step-4"]::before {
+  background: var(--color-level-4);
+}
+
+#step-5:checked ~ .progress-steps-wrapper label[for="step-1"] i {
+  background: var(--color-level-1);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-2"] i {
+  background: var(--color-level-2);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-2"]::before {
+  background: var(--color-level-2);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-3"] i {
+  background: var(--color-level-3);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-3"]::before {
+  background: var(--color-level-3);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-4"] i {
+  background: var(--color-level-4);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-4"]::before {
+  background: var(--color-level-4);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-5"] i {
+  background: var(--color-naz-1);
+}
+#step-5:checked ~ .progress-steps-wrapper label[for="step-5"]::before {
+  background: var(--color-naz-1);
+}
+
+.level {
+  font-size: 0.8rem;
+  color: #ababab;
+  }
+
+  /* Additional CSS untuk Modal Top Topics */
+
+/* Membuat card clickable dengan hover effect */
+:host ::ng-deep .cursor-pointer {
+  cursor: pointer !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+:host ::ng-deep .cursor-pointer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Styling untuk Modal */
+:host ::ng-deep .top-topics-modal {
+  .p-dialog-header {
+    padding: 1.5rem !important;
+    border-bottom: 1px solid #ebedef;
+    
+    .p-dialog-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  }
+  
+  .p-dialog-content {
+    padding: 1.5rem !important;
+  }
+  
+  .p-dialog-footer {
+    padding: 1rem 1.5rem !important;
+    border-top: 1px solid #ebedef;
+    justify-content: flex-end;
+  }
+}
+
+/* Search Input Styling */
+:host ::ng-deep .p-inputgroup {
+  .p-inputgroup-addon {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+  }
+  
+  .p-inputtext {
+    border-color: #dee2e6;
+    
+    &:focus {
+      border-color: var(--color-primary, #3b82f6);
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+    }
+  }
+}
+
+/* Topics List Styling dalam Modal */
+.topics-list {
+  .summary-item {
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+  
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.65rem;
+  }
+}
+
+/* Scrollbar Styling */
+.topics-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.topics-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.topics-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.topics-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive untuk Modal */
+@media (max-width: 768px) {
+  :host ::ng-deep .top-topics-modal {
+    .p-dialog {
+      width: 95vw !important;
+      margin: 1rem;
+    }
+    
+    .p-dialog-header,
+    .p-dialog-content,
+    .p-dialog-footer {
+      padding: 1rem !important;
+    }
+  }
+  
+  .topics-list {
+    max-height: 300px !important;
+  }
+}
+
+/* Additional CSS untuk Modal Top Topics */
+
+/* Membuat card clickable dengan hover effect */
+:host ::ng-deep .cursor-pointer {
+  cursor: pointer !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+:host ::ng-deep .cursor-pointer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Modal Overlay & Background */
+:host ::ng-deep .p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.6) !important; /* Overlay gelap */
+  backdrop-filter: blur(3px) !important; /* Blur effect */
+}
+
+:host ::ng-deep .p-dialog {
+  background-color: #ffffff !important; /* Background putih solid */
+  border-radius: 12px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+  border: none !important;
+}
+
+/* Styling untuk Modal Content */
+:host ::ng-deep .top-topics-modal {
+  .p-dialog-header {
+    padding: 1.5rem !important;
+    border-bottom: 1px solid #ebedef;
+    background-color: #ffffff !important; /* Pastikan header putih solid */
+    border-radius: 12px 12px 0 0 !important;
+    
+    .p-dialog-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  }
+  
+  .p-dialog-content {
+    padding: 1.5rem !important;
+    background-color: #ffffff !important; /* Content putih solid */
+  }
+  
+  .p-dialog-footer {
+    padding: 1rem 1.5rem !important;
+    border-top: 1px solid #ebedef;
+    background-color: #ffffff !important; /* Footer putih solid */
+    border-radius: 0 0 12px 12px !important;
+    justify-content: flex-end;
+  }
+}
+
+/* Pastikan seluruh dialog container solid */
+:host ::ng-deep .p-dialog .p-dialog-content,
+:host ::ng-deep .p-dialog .p-dialog-header,
+:host ::ng-deep .p-dialog .p-dialog-footer {
+  background: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Search Input Styling */
+:host ::ng-deep .p-inputgroup {
+  .p-inputgroup-addon {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+  }
+  
+  .p-inputtext {
+    border-color: #dee2e6;
+    
+    &:focus {
+      border-color: var(--color-primary, #3b82f6);
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+    }
+  }
+}
+
+/* Topics List Styling dalam Modal */
+.topics-list {
+  .summary-item {
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+  
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.65rem;
+  }
+}
+
+/* Scrollbar Styling */
+.topics-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.topics-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.topics-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.topics-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive untuk Modal */
+@media (max-width: 768px) {
+  :host ::ng-deep .top-topics-modal {
+    .p-dialog {
+      width: 95vw !important;
+      margin: 1rem;
+    }
+    
+    .p-dialog-header,
+    .p-dialog-content,
+    .p-dialog-footer {
+      padding: 1rem !important;
+    }
+  }
+  
+  .topics-list {
+    max-height: 300px !important;
+  }
+}
+
+/* Icon Circle untuk modal header */
+:host ::ng-deep .top-topics-modal .icon-circle-sm.top-topic {
+  background-color: var(--color-naz-1, #f1416d);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* No results message styling */
+.text-center {
+  .pi-search {
+    color: #6c757d !important;
+  }
+  
+  .text-muted {
+    color: #6c757d !important;
+    font-size: 0.9rem;
+  }
+}
+
+.search {
+  display: flex;
+}
+
+.form-control {
+  border: 1px solid;
+  border-color: #dee2e6;
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+  display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border-radius: 3px;
+    transition: border-color .15s 
+ease-in-out, box-shadow .15s 
+ease-in-out;
+}

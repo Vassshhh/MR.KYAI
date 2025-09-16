@@ -1,0 +1,14 @@
+<nav class="bottom-nav-container">
+    <a routerLink="/dashboard" routerLinkActive="active">
+        <i class="pi pi-th-large"></i>
+        <span>Dashboard</span>
+    </a>
+    <a routerLink="/ai-chat" routerLinkActive="active">
+        <i class="pi pi-microchip-ai"></i>
+        <span>AI Agent</span>
+    </a>
+    <a (click)="layoutService.toggleMobileSidebar()">
+        <i class="pi pi-cog"></i>
+        <span>Settings</span>
+    </a>
+</nav>
