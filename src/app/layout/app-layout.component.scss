@@ -33,6 +33,14 @@
   padding: 1.5rem;
   background-color: #f2f4f9;
   border-top: 1px solid var(--color-border);
+  overflow-y: auto;
+}
+
+/* Mode AI Chatbot (tanpa padding, tetap dibatasi sidebar & bottom nav) */
+.layout-main.no-padding {
+  padding: 0;
+  background-color: #fff; // biar bersih
+  border-top: none;
 }
 
 .layout-bottom-nav {

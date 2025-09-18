@@ -1,51 +1,69 @@
-<div class="chat-page-container">
-    <header class="chat-header">
-        <div class="header-left">
-            <button pButton type="button" icon="pi pi-bars" class="p-button-text p-button-secondary" (click)="sidebarVisible = true"></button>
-        </div>
-        <div class="header-center">
-            <h4 class="fw-bold mb-0">MAYA</h4>
-            <span class="d-block small text-muted">Virtual Agent BAPENDA</span>
-        </div>
-        <div class="header-right">
-            <img src="/assets/images/logo_pemprov_jatim.png" alt="Logo" class="logo-img">
-        </div>
-    </header>
-
-    <div class="chat-messages" #chatMessagesContainer>
-        <div *ngFor="let msg of messages$ | async" 
-             class="chat-bubble"
-             [ngClass]="{ 'ai': msg.role === 'ai', 'user': msg.role === 'user' }">
-            
-            <div *ngIf="msg.role === 'ai'" class="chat-icon">
-                <img src="/assets/images/ai-agent-chat.png" alt="AI Avatar">
-            </div>
-
-            <div class="chat-text">
-                <div *ngIf="msg.isLoading" class="typing-indicator">
-                    <span></span><span></span><span></span>
-                </div>
-                <div *ngIf="!msg.isLoading" [innerHTML]="msg.text | marked"></div>
-            </div>
-        </div>
+<!-- src/app/features/ai-chat/ai-chat.component.html -->
+<div class="chat-page-container ai-chat-page">
+  <!-- Header -->
+  <header class="chat-header">
+    <div class="header-center">
+      <h4 class="title">DINDA</h4>
+      <span class="subtitle">Virtual Agent BAPENDA</span>
     </div>
 
-    <div class="chat-input-area">
-        <div class="p-inputgroup">
-            <button pButton icon="pi pi-paperclip" class="p-button-secondary"></button>
-            <input type="text" pInputText placeholder="Tanyakan apa saja..." 
-                   [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
-            <button pButton icon="pi pi-microphone" class="p-button-secondary"></button>
-            <button pButton icon="pi pi-send" (click)="sendMessage()" [disabled]="!newMessage.trim()"></button>
-        </div>
+    <div class="header-right">
+      <img src="/assets/images/logo_pemprov_jatim.png" alt="Logo" class="logo-img" />
     </div>
+  </header>
+
+  <!-- Messages -->
+  <div class="chat-messages" #chatMessagesContainer>
+    <div
+      *ngFor="let msg of messages$ | async; trackBy: trackByMessage"
+      class="chat-bubble"
+      [ngClass]="{ ai: msg.role === 'ai', user: msg.role === 'user' }">
+
+      <!-- Avatar untuk AI -->
+      <div *ngIf="msg.role === 'ai'" class="chat-icon">
+        <img src="/assets/images/ai-agent-chat.png" alt="AI Avatar" />
+      </div>
+
+      <!-- Isi pesan -->
+      <div class="chat-text">
+        <!-- Loading indicator -->
+        <div *ngIf="msg.isLoading" class="typing-indicator">
+          <span></span><span></span><span></span>
+        </div>
+
+        <!-- Pesan utama -->
+        <div *ngIf="!msg.isLoading && msg.text" class="message-content" [innerHTML]="msg.text | marked"></div>
+
+        <!-- Error / kosong -->
+        <div *ngIf="!msg.isLoading && !msg.text" class="message-content error">
+          <em>Pesan tidak dapat ditampilkan</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input area -->
+  <div class="chat-input-area">
+    <div class="p-inputgroup">
+      <button pButton icon="pi pi-paperclip" class="p-button-secondary" [disabled]="isLoading"></button>
+
+      <input
+        type="text"
+        pInputText
+        placeholder="Tanyakan apa saja..."
+        [(ngModel)]="newMessage"
+        (keyup.enter)="sendMessage()"
+        [disabled]="isLoading" />
+
+      <!-- TOMBOL DINAMIS -->
+      <button
+        pButton
+        class="p-button-secondary"
+        [icon]="newMessage.trim() ? 'pi pi-send' : 'pi pi-microphone piw'"
+        (click)="newMessage.trim() ? sendMessage() : startVoiceInput()"
+        [disabled]="isLoading"
+        [loading]="isLoading && !!newMessage.trim()">
+      </button>
+    </div>
+  </div>
 </div>
-
-<p-sidebar [(visible)]="sidebarVisible" position="left">
-    <ng-template pTemplate="header">Menu</ng-template>
-    <div class="flex flex-column h-full">
-        <div class="mt-auto">
-             <p-button label="Hapus Riwayat Chat" icon="pi pi-trash" styleClass="p-button-danger p-button-outlined w-full" (click)="clearHistory()"></p-button>
-        </div>
-    </div>
-</p-sidebar>

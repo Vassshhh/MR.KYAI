@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { EventBusService } from '../../../core/services/event-bus.service';
+
 
 @Component({
   selector: 'app-sidebar',
@@ -17,13 +19,25 @@ import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 export class SidebarComponent {
   settingsMenuOpen: boolean = false;
 
+  constructor(private eventBus: EventBusService) {}
+
   toggleSettingsMenu() {
     this.settingsMenuOpen = !this.settingsMenuOpen;
   }
 
   isSettingsActive(): boolean {
-    // This method would typically check if any of the settings sub-routes are active
-    // For now, a simple check based on settingsMenuOpen
     return this.settingsMenuOpen;
+  }
+
+  clearChatHistory() {
+    if (confirm('Apakah Anda yakin ingin menghapus semua riwayat chat?')) {
+      // Emit event dengan format yang benar
+      this.eventBus.emit('clearChatHistory');
+      
+      // Hapus dari localStorage juga
+      localStorage.removeItem('chatHistory');
+      
+      alert('Riwayat chat berhasil dihapus');
+    }
   }
 }

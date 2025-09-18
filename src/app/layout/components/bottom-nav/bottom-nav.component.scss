@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: var(--height-bottom-nav);
-  background-color: #ffffff; // <-- Pakai putih solid
+  background-color: #ffffff; // putih solid
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: space-around;
@@ -22,6 +22,7 @@
     color: var(--color-text-light);
     font-size: 0.75rem;
     cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
 
     i {
       font-size: 1.5rem;
@@ -31,5 +32,85 @@
     &.active {
       color: var(--color-primary);
     }
+
+    &:hover {
+      color: var(--color-primary);
+      background-color: var(--color-primary-light);
+    }
+  }
+}
+
+/* Settings dropdown container */
+.bottom-settings {
+  position: relative;
+  flex-grow: 1;
+
+  a {
+    flex-direction: column;
+  }
+
+  .chevron-icon {
+    margin-left: 0.25rem;
+    transition: transform 0.3s ease;
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+
+  .submenu {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    border-top-left-radius: var(--border-radius-medium);
+    border-top-right-radius: var(--border-radius-medium);
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+
+    &.open {
+      max-height: 400px;
+    }
+
+    li a {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      color: var(--color-text-light);
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease;
+
+      i {
+        font-size: 1.2rem;
+        margin-right: 0.75rem;
+      }
+
+      &:hover {
+        background-color: var(--color-primary-light);
+        color: var(--color-primary);
+      }
+
+      &.active {
+        background-color: var(--color-primary);
+        color: #fff;
+      }
+    }
+  }
+}
+
+/* Tombol clear history di submenu */
+.submenu a.clear-history {
+  color: var(--color-text-warning, #3f4254);
+
+  &:hover {
+    background-color: var(--color-bg-warning-hover, #f8d0d0);
+    color: var(--color-text-warning-hover, #ff4545);
   }
 }

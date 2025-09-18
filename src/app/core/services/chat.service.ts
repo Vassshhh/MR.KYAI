@@ -1,7 +1,6 @@
 // src/app/core/services/chat.service.ts
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ChatMessage } from '../models/chat-message.model';
 
@@ -9,13 +8,13 @@ import { ChatMessage } from '../models/chat-message.model';
   providedIn: 'root'
 })
 export class ChatService {
-  private n8nWebhookUrl = 'https://auto.lab.kediritechnopark.com/webhook/webchat/bapenda-kediri';
+  private apiUrl = '/api/v1/chat';
   private CHAT_HISTORY_KEY = 'chatHistory';
 
   private messagesSubject = new BehaviorSubject<ChatMessage[]>([]);
   public messages$: Observable<ChatMessage[]> = this.messagesSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.loadChatHistory();
   }
 
@@ -23,7 +22,7 @@ export class ChatService {
     const history = JSON.parse(localStorage.getItem(this.CHAT_HISTORY_KEY) || '[]');
     if (history.length === 0) {
       history.push({ 
-        text: 'Hai, saya Maya, Virtual Agent Kediri Technopark. Ada yang bisa saya bantu?', 
+        text: 'Halo! Nama saya Dinda, senior customer service BAPENDA Jawa Timur. Ada yang bisa saya bantu hari ini?', 
         role: 'ai' 
       });
     }
@@ -41,30 +40,107 @@ export class ChatService {
     this.saveHistory(updatedMessages);
   }
 
-  public sendMessageToBot(userMessage: string): void {
-    this.addMessage({ text: userMessage, role: 'user' });
-    this.addMessage({ text: '', role: 'ai', isLoading: true });
+  // Method untuk update message tertentu (untuk mengganti loading message)
+  private updateMessage(index: number, newMessage: ChatMessage): void {
+    const currentMessages = this.messagesSubject.getValue();
+    const updatedMessages = [...currentMessages];
+    updatedMessages[index] = newMessage;
+    this.messagesSubject.next(updatedMessages);
+    this.saveHistory(updatedMessages);
+  }
+
+  public async sendMessageToBot(userMessage: string): Promise<string> {
+    console.log('ChatService: Starting sendMessageToBot with:', userMessage);
     
+    // 1. Tambahkan user message
+    this.addMessage({ text: userMessage, role: 'user' });
+    
+    // 2. Tambahkan loading message dan simpan indexnya
+    const currentMessages = this.messagesSubject.getValue();
+    const loadingMessageIndex = currentMessages.length;
+    this.addMessage({ text: '...', role: 'ai', isLoading: true });
+
+    // 3. Setup session ID
     let sessionId = localStorage.getItem('tokenChat');
     if (!sessionId) {
       sessionId = crypto.randomUUID();
       localStorage.setItem('tokenChat', sessionId);
     }
 
-    this.http.post<{ output: string }>(this.n8nWebhookUrl, { message: userMessage, sessionId })
-      .subscribe({
-        next: (response) => {
-          const currentMessages = this.messagesSubject.getValue().filter(m => !m.isLoading);
-          this.messagesSubject.next(currentMessages);
-          this.addMessage({ text: response.output, role: 'ai' });
-        },
-        error: (err) => {
-          const currentMessages = this.messagesSubject.getValue().filter(m => !m.isLoading);
-          this.messagesSubject.next(currentMessages);
-          this.addMessage({ text: 'Maaf, terjadi kesalahan. Coba lagi nanti.', role: 'ai' });
-          console.error(err);
-        }
+    try {
+      console.log('ChatService: Making API request...');
+      
+      const response = await fetch(this.apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMessage,
+          conversationId: sessionId,
+          useTools: true,
+          topK: 5
+        })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('ChatService: Raw API response:', data);
+      
+      // 4. Extract dan validate response
+      let botReply: string = '';
+      
+      if (data.content) {
+        if (typeof data.content === 'string') {
+          botReply = data.content;
+        } else if (typeof data.content === 'object') {
+          // Jika content adalah object, coba stringify atau ambil property tertentu
+          botReply = JSON.stringify(data.content);
+        } else {
+          botReply = String(data.content);
+        }
+      } else if (data.message) {
+        botReply = String(data.message);
+      } else if (data.response) {
+        botReply = String(data.response);
+      } else {
+        botReply = 'Maaf, saya tidak dapat memberikan jawaban saat ini.';
+      }
+
+      // 5. Ensure it's actually a string
+      botReply = String(botReply).trim();
+      
+      if (!botReply || botReply === 'undefined' || botReply === 'null') {
+        botReply = 'Maaf, saya tidak dapat memberikan jawaban saat ini.';
+      }
+
+      console.log('ChatService: Final botReply:', botReply);
+      console.log('ChatService: botReply type:', typeof botReply);
+      console.log('ChatService: botReply length:', botReply.length);
+
+      // 6. Update loading message dengan response
+      this.updateMessage(loadingMessageIndex, { 
+        text: botReply, 
+        role: 'ai',
+        isLoading: false 
+      });
+
+      return botReply;
+
+    } catch (error) {
+      console.error('ChatService: Error in sendMessageToBot:', error);
+      
+      // Update loading message dengan error message
+      const errorMessage = 'Maaf, terjadi kesalahan. Coba lagi nanti.';
+      this.updateMessage(loadingMessageIndex, { 
+        text: errorMessage, 
+        role: 'ai',
+        isLoading: false 
+      });
+      
+      return errorMessage;
+    }
   }
 
   public clearChatHistory(): void {

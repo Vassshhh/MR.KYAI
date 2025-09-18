@@ -1,14 +1,40 @@
 <nav class="bottom-nav-container">
-    <a routerLink="/dashboard" routerLinkActive="active">
-        <i class="pi pi-th-large"></i>
-        <span>Dashboard</span>
+  <a routerLink="/dashboard" routerLinkActive="active">
+    <i class="pi pi-th-large"></i>
+    <span>Dashboard</span>
+  </a>
+
+  <a routerLink="/ai-chat" routerLinkActive="active">
+    <i class="pi pi-microchip-ai"></i>
+    <span>AI Agent</span>
+  </a>
+
+  <!-- Settings dropdown -->
+  <div class="bottom-settings" (click)="toggleSettingsMenu()">
+    <a [class.active]="settingsMenuOpen">
+      <i class="pi pi-cog"></i>
+      <span>Settings</span>
+      
     </a>
-    <a routerLink="/ai-chat" routerLinkActive="active">
-        <i class="pi pi-microchip-ai"></i>
-        <span>AI Agent</span>
-    </a>
-    <a (click)="layoutService.toggleMobileSidebar()">
-        <i class="pi pi-cog"></i>
-        <span>Settings</span>
-    </a>
+    <ul class="submenu" [class.open]="settingsMenuOpen">
+      <li>
+        <a routerLink="/settings/agent-config" routerLinkActive="active">
+          <i class="pi pi-sliders-h"></i>
+          <span>Agent Config</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/settings/ai-knowledge" routerLinkActive="active">
+          <i class="pi pi-database"></i>
+          <span>AI Knowledge</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" (click)="clearChatHistory(); $event.preventDefault()">
+          <i class="pi pi-trash"></i>
+          <span>Hapus Riwayat Chat</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 </nav>

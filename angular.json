@@ -70,7 +70,8 @@
               "buildTarget": "bapenda-kediri:build:production"
             },
             "development": {
-              "buildTarget": "bapenda-kediri:build:development"
+              "buildTarget": "bapenda-kediri:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

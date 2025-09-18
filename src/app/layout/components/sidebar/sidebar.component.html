@@ -38,6 +38,12 @@
         </ul>
     </div>
     <div class="sidebar-bottom">
+        <!-- Tombol Hapus Riwayat Chat - ditambahkan di atas logout -->
+        <a href="#" class="clear-history-item" (click)="clearChatHistory(); $event.preventDefault()">
+            <span>Hapus Riwayat Chat</span>
+            <i class="pi pi-trash"></i>
+        </a>
+        
         <a href="#" class="logout-item">
             <span>Logout</span>
             <i class="pi pi-sign-out"></i>
