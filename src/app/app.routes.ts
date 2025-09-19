@@ -11,7 +11,11 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', component: DashboardComponent },
             { path: 'ai-chat', component: AiChatComponent },
-            // Tambahkan rute untuk profile dan settings di sini
+            { 
+                path: 'profile', 
+                loadComponent: () => import('./features/profile/profile.component').then(c => c.ProfileComponent)
+            },
+            
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     }

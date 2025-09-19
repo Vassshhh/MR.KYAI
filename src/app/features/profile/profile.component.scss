@@ -1,0 +1,191 @@
+/* =================================================================
+   PROFILE COMPONENT STYLES - Simplified for use with AppLayout
+   ================================================================= */
+
+/* Activity log specific styles */
+.activity-log .list-group-item {
+    border-bottom: 1px solid #eff2f5 !important;
+}
+
+
+
+.activity-log .list-group-item:last-child {
+    border-bottom: none !important;
+}
+
+/* Profile photo preview styles */
+.profile-photo-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.375rem;
+    
+}
+
+/* settingan fotonya */
+.s-foto {
+    display: flex;
+    margin-bottom: 1.5rem !important;
+}
+
+/*settingan space kanan foto */
+.s-space {
+    padding-left: 1.5rem;
+}
+
+.text-model {
+    color: #666666;;
+}
+
+/* Form validation styles */
+.form-control.ng-invalid.ng-touched {
+    border-color: #f1416c;
+}
+
+.form-control.ng-valid.ng-touched {
+    border-color: #128c7e;
+}
+
+/* Button loading state */
+.btn[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Custom file upload button */
+.file-upload-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-upload-wrapper input[type=file] {
+    position: absolute;
+    left: -9999px;
+}
+
+/* Activity log item hover effect */
+.activity-log .list-group-item:hover {
+    background-color: rgba(0, 158, 247, 0.05);
+    transition: background-color 0.2s ease;
+}
+
+/* Badge styling for activity timestamps */
+.activity-log .badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Card styling enhancements */
+.card {
+    background-color: #fff;
+    border-radius: 0.65rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+}
+
+
+/* Form styling improvements */
+.form-label {
+    font-weight: 500;
+    color: #383838;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border: 1px solid #e7e7e7;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: #000000;
+    
+}
+
+.form-control:focus {
+    border-color: #009ef7;
+    
+}
+
+.f-space {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    width: 50%;
+}
+
+/* Button styling */
+.btn {
+    border-radius: 0.375rem;
+    font-weight: 500;
+    padding: 0.6rem 0.6rem;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 1rem;
+
+}
+
+.btn-primary {
+    background-color: #0d6efd;;
+    color: #fff;;
+    
+}
+
+.btn-primary:hover {
+    background-color: #0d6efd;;
+    color: #fff;;
+}
+
+.btn-danger {
+    background-color: #ff0040;
+    color: #fff;;
+    
+}
+
+.btn-danger:hover {
+    background-color: #c90032;
+    
+}
+
+/* Responsive adjustments for profile page */
+@media (max-width: 767px) {
+    .profile-photo-preview {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+}
+.row {
+  align-items: stretch; /* Biar col kiri dan kanan sama tinggi */
+  display: inline;
+  gap: 1rem;
+}
+.f-set {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    
+}
+
+.card-title {
+font-size: 1.25rem;
+font-weight: 700;
+display: flex;
+margin-top: unset;
+margin-bottom: 0.5rem;
+
+
+}
+
+.c-set {
+    display: flex;
+        flex-direction: column;
+}
+
+.f-lower-text{
+    font-size: 0.8rem;
+}
