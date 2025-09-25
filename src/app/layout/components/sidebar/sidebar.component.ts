@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { EventBusService } from '../../../core/services/event-bus.service';
-
+// Pastikan import ini benar
+import { TooltipModule } from 'primeng/tooltip'; 
 
 @Component({
   selector: 'app-sidebar',
@@ -11,13 +12,18 @@ import { EventBusService } from '../../../core/services/event-bus.service';
     CommonModule,
     RouterLink,
     RouterLinkActive,
-    RouterModule
+    RouterModule,
+    // Pastikan TooltipModule ada di sini
+    TooltipModule 
   ],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
   settingsMenuOpen: boolean = false;
+  
+  // Pastikan properti ini ada
+  public isExpanded: boolean = false;
 
   constructor(private eventBus: EventBusService) {}
 
@@ -31,13 +37,8 @@ export class SidebarComponent {
 
   clearChatHistory() {
     if (confirm('Apakah Anda yakin ingin menghapus semua riwayat chat?')) {
-      // Emit event dengan format yang benar
       this.eventBus.emit('clearChatHistory');
-      
-      // Hapus dari localStorage juga
       localStorage.removeItem('chatHistory');
-      
-      alert('Riwayat chat berhasil dihapus');
     }
   }
 }

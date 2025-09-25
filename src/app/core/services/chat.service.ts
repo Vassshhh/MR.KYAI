@@ -8,7 +8,7 @@ import { ChatMessage } from '../models/chat-message.model';
   providedIn: 'root'
 })
 export class ChatService {
-  private apiUrl = '/api/v1/chat';
+  private apiUrl = 'https://bot.kediritechnopark.com/webhook/mrkyai/chatbot';
   private CHAT_HISTORY_KEY = 'chatHistory';
 
   private messagesSubject = new BehaviorSubject<ChatMessage[]>([]);
@@ -25,7 +25,7 @@ export class ChatService {
         text: 'Halo! Nama saya Dinda, senior customer service BAPENDA Jawa Timur. Ada yang bisa saya bantu hari ini?', 
         role: 'ai' 
       });
-    }
+    }https://bot.kediritechnopark.com/webhook/mrkyai/chatbo
     this.messagesSubject.next(history);
   }
 
@@ -89,31 +89,35 @@ export class ChatService {
       console.log('ChatService: Raw API response:', data);
       
       // 4. Extract dan validate response
-      let botReply: string = '';
-      
-      if (data.content) {
-        if (typeof data.content === 'string') {
-          botReply = data.content;
-        } else if (typeof data.content === 'object') {
-          // Jika content adalah object, coba stringify atau ambil property tertentu
-          botReply = JSON.stringify(data.content);
-        } else {
-          botReply = String(data.content);
-        }
-      } else if (data.message) {
-        botReply = String(data.message);
-      } else if (data.response) {
-        botReply = String(data.response);
-      } else {
-        botReply = 'Maaf, saya tidak dapat memberikan jawaban saat ini.';
-      }
+let botReply: string = '';
 
-      // 5. Ensure it's actually a string
-      botReply = String(botReply).trim();
-      
-      if (!botReply || botReply === 'undefined' || botReply === 'null') {
-        botReply = 'Maaf, saya tidak dapat memberikan jawaban saat ini.';
-      }
+if (data.output) {
+  try {
+    const parsed = JSON.parse(data.output); // parse string jadi object
+    if (parsed.jawaban) {
+      botReply = parsed.jawaban;
+    } else {
+      botReply = JSON.stringify(parsed); // fallback
+    }
+  } catch (e) {
+    console.warn('ChatService: Failed to parse output JSON:', e);
+    botReply = String(data.output);
+  }
+} else if (data.content) {
+  if (typeof data.content === 'string') {
+    botReply = data.content;
+  } else if (typeof data.content === 'object') {
+    botReply = JSON.stringify(data.content);
+  } else {
+    botReply = String(data.content);
+  }
+} else if (data.message) {
+  botReply = String(data.message);
+} else if (data.response) {
+  botReply = String(data.response);
+} else {
+  botReply = 'Maaf, saya tidak dapat memberikan jawaban saat ini.';
+}
 
       console.log('ChatService: Final botReply:', botReply);
       console.log('ChatService: botReply type:', typeof botReply);

@@ -1,69 +1,52 @@
-<!-- src/app/features/ai-chat/ai-chat.component.html -->
 <div class="chat-page-container ai-chat-page">
-  <!-- Header -->
   <header class="chat-header">
-    <div class="header-center">
-      <h4 class="title">DINDA</h4>
-      <span class="subtitle">Virtual Agent BAPENDA</span>
+    <div class="header-left">
+      <div class="gemini-logo">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 4.5C12 4.5 15 2 18 4.5C21 7 19.5 10.5 18 12C16.5 13.5 12 12 12 12M12 19.5C12 19.5 9 22 6 19.5C3 17 4.5 13.5 6 12C7.5 10.5 12 12 12 12M12 12C12 12 14.25 12.75 15.75 14.25C17.25 15.75 18 18 18 18M12 12C12 12 9.75 11.25 8.25 9.75C6.75 8.25 6 6 6 6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <defs>
+      <linearGradient id="custom-gradient" x1="6" y1="4" x2="18" y2="20" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#008CBA"/>
+        <stop offset="1" stop-color="#009ef7"/>
+      </linearGradient>
+    </defs>
+  </svg>
+</div>
+      <div class="title-container">
+        <h1 class="title-header">Mister Kyai</h1>
+        <span class="model-badge">Pro</span>
+      </div>
     </div>
-
     <div class="header-right">
-      <img src="/assets/images/logo_pemprov_jatim.png" alt="Logo" class="logo-img" />
+      <button pButton type="button" icon="pi pi-plus" class="p-button-rounded p-button-text" pTooltip="New Chat"></button>
+      <div class="user-avatar">
+        <span>K</span>
+      </div>
     </div>
   </header>
 
-  <!-- Messages -->
   <div class="chat-messages" #chatMessagesContainer>
-    <div
-      *ngFor="let msg of messages$ | async; trackBy: trackByMessage"
-      class="chat-bubble"
-      [ngClass]="{ ai: msg.role === 'ai', user: msg.role === 'user' }">
-
-      <!-- Avatar untuk AI -->
-      <div *ngIf="msg.role === 'ai'" class="chat-icon">
-        <img src="/assets/images/ai-agent-chat.png" alt="AI Avatar" />
-      </div>
-
-      <!-- Isi pesan -->
+    <div *ngFor="let msg of messages$ | async; trackBy: trackByMessage" class="chat-bubble" [ngClass]="{ ai: msg.role === 'ai', user: msg.role === 'user' }">
+      
       <div class="chat-text">
-        <!-- Loading indicator -->
         <div *ngIf="msg.isLoading" class="typing-indicator">
           <span></span><span></span><span></span>
         </div>
-
-        <!-- Pesan utama -->
         <div *ngIf="!msg.isLoading && msg.text" class="message-content" [innerHTML]="msg.text | marked"></div>
-
-        <!-- Error / kosong -->
         <div *ngIf="!msg.isLoading && !msg.text" class="message-content error">
-          <em>Pesan tidak dapat ditampilkan</em>
+          <em>Pesan tidak dapat ditampilkan. Coba lagi.</em>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Input area -->
   <div class="chat-input-area">
-    <div class="p-inputgroup">
-      <button pButton icon="pi pi-paperclip" class="p-button-secondary" [disabled]="isLoading"></button>
-
-      <input
-        type="text"
-        pInputText
-        placeholder="Tanyakan apa saja..."
-        [(ngModel)]="newMessage"
-        (keyup.enter)="sendMessage()"
-        [disabled]="isLoading" />
-
-      <!-- TOMBOL DINAMIS -->
-      <button
-        pButton
-        class="p-button-secondary"
-        [icon]="newMessage.trim() ? 'pi pi-send' : 'pi pi-microphone piw'"
-        (click)="newMessage.trim() ? sendMessage() : startVoiceInput()"
-        [disabled]="isLoading"
-        [loading]="isLoading && !!newMessage.trim()">
-      </button>
+    <div class="input-wrapper">
+      <input type="text" pInputText placeholder="Tanyakan apa saja pada Mister Kyai..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" [disabled]="isLoading" />
+      <div class="input-actions">
+        <button pButton icon="pi pi-plus" class="p-button-rounded rounded p-button-text" [disabled]="isLoading"></button>
+        <button pButton [icon]="newMessage.trim() ? 'pi pi-arrow-up' : 'pi pi-microphone'" class="p-button-rounded rounded send-button" (click)="newMessage.trim() ? sendMessage() : startVoiceInput()" [disabled]="isLoading" [loading]="isLoading && !!newMessage.trim()"></button>
+      </div>
     </div>
   </div>
 </div>

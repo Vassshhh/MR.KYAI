@@ -1,55 +1,48 @@
-<div class="sidebar-content">
-    <div class="sidebar-nav">
-        <li class="sdcom">
-                <img src="/assets/images/logo_pemprov_jatim.png" alt="Logo" class="sidebar-logo ">
-                <span class="logo-text ">BAPENDA</span>
-            </li>
+<div class="sidebar-container" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false">
+  <div class="sidebar-content">
+      <div class="sidebar-header">
+          
+          <span class="logo-text">Mister Kyai</span>
+      </div>
+
+      <div class="sidebar-nav">
         <ul class="nav-list">
-            
             <li>
-                <a routerLink="/dashboard" routerLinkActive="active">
-                    <i class="pi pi-th-large"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a routerLink="/ai-chat" routerLinkActive="active">
+                <a routerLink="/ai-chat" routerLinkActive="active" 
+                   tooltipPosition="right" 
+                   [pTooltip]="isExpanded ? '' : 'AI Agent'">
                     <i class="pi pi-microchip-ai"></i>
                     <span>AI Agent</span>
                 </a>
             </li>
-             <li>
-                <a routerLink="/profile" routerLinkActive="active">
-                    <i class="pi pi-user"></i>
-                    <span>Profile</span>
-                </a>
+            <li>
+              <a (click)="toggleSettingsMenu()" [class.active]="isSettingsActive()">
+                  <i class="pi pi-cog"></i>
+                  <span>Settings</span>
+                  <i class="pi pi-chevron-down chevron-icon" [class.rotated]="settingsMenuOpen"></i>
+              </a>
+              <ul class="submenu" [class.open]="settingsMenuOpen">
+                   <li><a routerLink="/settings/agent-config" routerLinkActive="active">Agent Config</a></li>
+                   <li><a routerLink="/settings/ai-knowledge" routerLinkActive="active">AI Knowledge</a></li>
+              </ul>
             </li>
-            <li (click)="toggleSettingsMenu()">
-                <a [class.active]="isSettingsActive()">
-                    <i class="pi pi-cog"></i>
-                    <span>Settings</span>
-                    <i class="pi pi-chevron-down chevron-icon" [class.rotated]="settingsMenuOpen"></i>
-                </a>
-            </li>
-            <ul class="submenu" [class.open]="settingsMenuOpen">
-                 <li><a routerLink="/settings/agent-config" routerLinkActive="active">Agent Config</a></li>
-                 <li><a routerLink="/settings/ai-knowledge" routerLinkActive="active">AI Knowledge</a></li>
-            </ul>
         </ul>
-    </div>
-    <div class="sidebar-bottom">
-        <!-- Tombol Hapus Riwayat Chat - ditambahkan di atas logout -->
-        <a href="#" class="clear-history-item" (click)="clearChatHistory(); $event.preventDefault()">
-            <span>Hapus Riwayat Chat</span>
-            <i class="pi pi-trash"></i>
-        </a>
-        
-        <a href="#" class="logout-item">
-            <span>Logout</span>
-            <i class="pi pi-sign-out"></i>
-        </a>
-        <footer class="sidebar-footer">
-            <p>&copy; 2025 Kediri Technopark</p>
-        </footer>
-    </div>
+      </div>
+
+      <div class="sidebar-bottom">
+          <a href="#" class="clear-history-item" (click)="clearChatHistory(); $event.preventDefault()"
+             tooltipPosition="right" 
+             [pTooltip]="isExpanded ? '' : 'Hapus Riwayat'">
+              <i class="pi pi-trash"></i>
+              <span>Hapus Riwayat Chat</span>
+          </a>
+          
+          <a href="#" class="logout-item"
+             tooltipPosition="right" 
+             [pTooltip]="isExpanded ? '' : 'Logout'">
+              <i class="pi pi-sign-out"></i>
+              <span>Logout</span>
+          </a>
+          </div>
+  </div>
 </div>

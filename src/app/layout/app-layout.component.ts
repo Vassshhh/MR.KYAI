@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
 import { SidebarModule } from 'primeng/sidebar';
@@ -15,7 +14,6 @@ import { filter } from 'rxjs/operators';
   imports: [
     CommonModule,
     RouterOutlet,
-    HeaderComponent,
     SidebarComponent,
     BottomNavComponent,
     SidebarModule
@@ -24,7 +22,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app-layout.component.scss']
 })
 export class AppLayoutComponent implements OnInit {
-  showHeader = true;
+  showHeader = false; // default hidden, karena header sudah dihapus
   hideBody = false;
 
   constructor(
@@ -33,11 +31,9 @@ export class AppLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // cek URL pertama kali
     const initialUrl = this.router.url;
     this.updateLayoutFlags(initialUrl);
 
-    // subscribe navigasi
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
@@ -48,11 +44,8 @@ export class AppLayoutComponent implements OnInit {
 
   private updateLayoutFlags(url: string) {
     const isAiChat = url.startsWith('/ai-chat');
-    this.showHeader = !isAiChat;
+    this.showHeader = false;   // header dihilangkan permanen
     this.hideBody = isAiChat;
     console.log('URL:', url, '| hideBody:', this.hideBody, '| showHeader:', this.showHeader);
   }
 }
-
-
-

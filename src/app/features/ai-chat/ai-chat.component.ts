@@ -1,16 +1,19 @@
+// src/app/features/ai-chat/ai-chat.component.ts
+
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 
-// PrimeNG modules
+// PrimeNG modules & Pipes
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { SidebarModule } from 'primeng/sidebar';
+import { TooltipModule } from 'primeng/tooltip';
+import { MarkedPipe } from '../../core/marked.pipe';
 
+// Services
 import { ChatService } from '../../core/services/chat.service';
 import { ChatMessage } from '../../core/models/chat-message.model';
-import { MarkedPipe } from '../../core/marked.pipe';
 import { EventBusService } from './../../core/services/event-bus.service';
 
 
@@ -24,14 +27,13 @@ import { EventBusService } from './../../core/services/event-bus.service';
     FormsModule,
     InputTextModule,
     ButtonModule,
-    SidebarModule,
+    TooltipModule, // Tambahkan TooltipModule untuk pTooltip
     MarkedPipe 
   ]
 })
 export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('chatMessagesContainer') private chatContainer!: ElementRef;
 
-  sidebarVisible: boolean = false;
   newMessage: string = '';
   messages$: Observable<ChatMessage[]>;
   isLoading: boolean = false;
@@ -48,6 +50,7 @@ export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Berlangganan ke stream pesan untuk memicu auto-scroll
     this.messages$.subscribe(messages => {
       if (messages.length > this.lastMessageCount) {
         this.shouldScrollToBottom = true;
@@ -55,26 +58,23 @@ export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       }
     });
 
-    // Listen untuk event clearChatHistory dari sidebar - PERBAIKAN DI SINI
+    // Mendengarkan event 'clearChatHistory' dari komponen lain (misal: sidebar)
     this.eventSubscription = this.eventBus.on('clearChatHistory').subscribe(() => {
-      console.log('Received clearChatHistory event from sidebar');
-      
-      // Reset local state
+      this.chatService.clearChatHistory();
       this.shouldScrollToBottom = true;
       this.lastMessageCount = 0;
-      
-      // Panggil clearChatHistory dari service untuk update observable
-      this.chatService.clearChatHistory();
     });
   }
 
   ngOnDestroy(): void {
+    // Pastikan untuk unsubscribe untuk menghindari memory leak
     if (this.eventSubscription) {
       this.eventSubscription.unsubscribe();
     }
   }
 
   ngAfterViewChecked() {
+    // Lakukan scroll ke bawah jika ada pesan baru
     if (this.shouldScrollToBottom) {
       this.scrollToBottom();
       this.shouldScrollToBottom = false;
@@ -83,6 +83,7 @@ export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   async sendMessage() {
     if (!this.newMessage.trim() || this.isLoading) return;
+    
     const messageToSend = this.newMessage.trim();
     this.newMessage = '';
     this.isLoading = true;
@@ -90,30 +91,17 @@ export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     try {
       await this.chatService.sendMessageToBot(messageToSend);
-      this.shouldScrollToBottom = true;
     } catch (error: any) {
-      console.error('Error sending message:', error);
+      console.error('Error saat mengirim pesan:', error);
+      // Anda bisa menambahkan pesan error ke chat di sini jika perlu
     } finally {
       this.isLoading = false;
-    }
-  }
-
-  clearHistory() {
-    if (confirm('Apakah Anda yakin ingin menghapus semua riwayat chat?')) {
-      this.chatService.clearChatHistory();
-      this.sidebarVisible = false;
       this.shouldScrollToBottom = true;
-      this.lastMessageCount = 0;
     }
-  }
-
-  sendQuickMessage(message: string) {
-    this.newMessage = message;
-    this.shouldScrollToBottom = true;
-    this.sendMessage();
   }
 
   startVoiceInput() {
+    // Fungsi speech recognition tetap sama
     if (!('webkitSpeechRecognition' in window)) {
       alert('Browser tidak mendukung voice recognition');
       return;
@@ -125,8 +113,7 @@ export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     recognition.maxAlternatives = 1;
 
     recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      this.newMessage = transcript;
+      this.newMessage = event.results[0][0].transcript;
     };
 
     recognition.onerror = (event: any) => {
@@ -135,7 +122,8 @@ export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     recognition.start();
   }
-
+  
+  // Fungsi trackBy untuk optimisasi ngFor
   trackByMessage(index: number, msg: ChatMessage): any {
     return msg?.id ?? index;
   }
@@ -143,13 +131,14 @@ export class AiChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   private scrollToBottom(): void {
     try {
       if (this.chatContainer) {
+        // Gunakan timeout kecil untuk memastikan DOM sudah dirender sepenuhnya
         setTimeout(() => {
           const element = this.chatContainer.nativeElement;
           element.scrollTop = element.scrollHeight;
         }, 50);
       }
     } catch (err) {
-      console.error('Error scrolling to bottom:', err);
+      console.error('Gagal melakukan scroll:', err);
     }
   }
 }

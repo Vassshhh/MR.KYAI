@@ -1,21 +1,69 @@
-:host, .sidebar-content {
+/* src/app/features/sidebar/sidebar.component.scss (Final) */
+
+// Variabel untuk mengontrol lebar sidebar
+:host {
+    --sidebar-width-collapsed: 80px;
+    --sidebar-width-expanded: 280px;
+}
+
+// Container utama yang mengontrol semua fungsionalitas hover
+.sidebar-container {
+    width: var(--sidebar-width-collapsed);
+    height: 100vh;
+    background-color: var(--color-abit-dark);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-x: hidden;
+
+    &:hover {
+        width: var(--sidebar-width-expanded);
+
+        .logo-text, .nav-list a span, .sidebar-bottom a span, .chevron-icon, .sidebar-footer {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0.1s;
+        }
+    }
+}
+
+.sidebar-container:hover .p-tooltip {
+    display: none !important;
+}
+
+.sidebar-content {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: var(--color-bg-sidebar);
-    border-right: 1px solid var(--color-border);
+    width: var(--sidebar-width-expanded);
 }
 
-.sidebar-logo{
-    width: 30px;
-    margin-right: 12px;
+// --- BAGIAN HEADER ---
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    height: 65px;
+    flex-shrink: 0;
+
+    .pi-bars {
+        font-size: 1.5rem;
+        min-width: 48px;
+        text-align: center;
+        margin-left: -12px;
+        color: var(--color-text-light);
+    }
     
-    
+    .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
+    }
 }
 
+// --- BAGIAN NAVIGASI UTAMA & BAWAH ---
 .sidebar-nav {
     flex-grow: 1;
-    padding: 1rem 1rem;
+    padding: 0 1rem;
     overflow-y: auto;
 }
 
@@ -23,149 +71,90 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-
-    a {
-        display: flex;
-        align-items: center;
-        padding: 0.8rem 1rem;
-        margin-bottom: 0.25rem;
-        border-radius: var(--border-radius-medium);
-        text-decoration: none;
-        color: var(--color-text-light);
-        font-weight: 500;
-        transition: color 0.2s ease, background-color 0.2s ease;
-        border-radius: 0.75rem;
-        cursor: pointer;
-
-        i {
-            margin-right: 1rem;
-            font-size: 1.2rem;
-        }
-
-        &:hover {
-            color: var(--color-primary);
-            background-color: var(--color-primary-light);
-            border-radius: 0.75rem;
-        }
-
-        &.active {
-            background-color: var(--color-primary);
-            color: white;
-            border-radius: 0.75rem;
-        }
-    }
 }
 
-.chevron-icon {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-    &.rotated {
-        transform: rotate(180deg);
+.nav-list a, .sidebar-bottom a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-text-light);
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    i:not(.chevron-icon) {
+        font-size: 1.3rem;
+        min-width: 48px;
+        text-align: center;
+        margin-left: -12px;
+        margin-right: 12px;
+        transition: color 0.2s ease;
     }
+
+    span { white-space: nowrap; }
+
+    .chevron-icon {
+        margin-left: auto;
+        font-size: 0.8rem !important;
+        &.rotated { transform: rotate(180deg); }
+    }
+
+    // Hanya gaya untuk hover
+    &:hover { 
+        background-color: var(--color-dark); 
+        color: #fff; 
+    }
+
+    // --- [DIHAPUS] ---
+    // Blok kode di bawah ini telah dihapus agar tidak ada lagi
+    // latar belakang biru saat menu aktif/diklik.
+    /*
+    &.active { 
+        background-color: var(--color-primary); 
+        color: white; 
+        i { color: white; } 
+    }
+    */
 }
 
+// --- LOGIKA UNTUK MENYEMBUNYIKAN TEKS ---
+.logo-text, .nav-list a span, .sidebar-bottom a span, .chevron-icon, .sidebar-footer {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
+}
+
+// --- BAGIAN SUBMENU & FOOTER ---
 .submenu {
     list-style-type: none;
-    padding-left: 1.5rem;
+    padding-left: 0.5rem;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
 
-    &.open {
-        max-height: 200px; /* Adjust as needed */
-    }
-
+    &.open { max-height: 200px; }
+    
+    // Gaya active pada submenu (hanya warna teks) kita biarkan
+    // agar pengguna tahu sedang berada di halaman submenu yang mana.
     a {
-        padding-left: 2.5rem;
-        font-size: 0.9rem;
-        &.active {
-            color: var(--color-primary);
-            font-weight: 600;
-            background-color: transparent;
-        }
+        padding-left: 2.2rem !important;
+        &.active, &:hover { background: none !important; }
+        &.active { color: var(--color-primary); font-weight: 600; }
+        &:hover { color: #fff; }
     }
 }
 
 .sidebar-bottom {
-    padding: 1.5rem;
+    padding: 1rem;
     flex-shrink: 0;
-}
-
-// Style untuk tombol hapus riwayat chat
-.clear-history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--color-bg-warning, #ffffff);
-    padding: 0.8rem 1rem;
-    margin-bottom: 0.75rem;
-    border-radius: var(--border-radius-medium);
-    text-decoration: none;
-    color: var(--color-text-warning, #3f4254);
-    font-weight: 500;
-    
-    transition: all 0.2s ease;
-    cursor: pointer;
-
-    i {
-        font-size: 1.1rem;
-    }
-
-    &:hover {
-        background-color: var(--color-bg-warning-hover, #f8d0d0);
-        color: var(--color-text-warning-hover, #ff4545);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 1rem;
-    }
-
-    &:active {
-        transform: translateY(0);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-}
-
-.logout-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--color-bg-logout);
-    padding: 0.8rem 1rem;
-    border-radius: var(--border-radius-medium);
-    text-decoration: none;
-    color: var(--color-text-dark);
-    font-weight: 500;
-    transition: all 0.2s ease;
-    cursor: pointer;
-
-    &:hover {
-        background-color: var(--color-bg-logout-hover, #d6d6d6);
-        color: #3f4254;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 1rem;
-    }
-
-    &:active {
-        transform: translateY(0);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
+    .clear-history-item:hover { background-color: #5d3838 !important; color: #ff8a8a !important; }
+    .logout-item:hover { background-color: var(--color-dark) !important; }
 }
 
 .sidebar-footer {
     font-size: 0.8rem;
     color: var(--color-text-light);
-    margin-top: 1rem;
     text-align: center;
-}
-
-.sdcom {
-    display: flex;
-    align-items: center;
-    margin: 1rem 1.75rem;
-}
-
-.logo-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
+}  

@@ -1,32 +1,65 @@
 :host {
   display: flex;
   min-height: 100vh;
+
+  // -- [DITAMBAHKAN] --
+  // Variabel untuk mengontrol lebar sidebar saat tertutup dan terbuka.
+  --sidebar-width-collapsed: 80px;
+  --sidebar-width-expanded: 280px;
 }
 
 .layout-wrapper {
   display: flex;
   width: 100%;
-  flex-direction: row; /* pastikan horizontal */
+  flex-direction: row;
 }
 
 .layout-sidebar {
-  flex-shrink: 0; /* jangan mengecil */
-  width: var(--width-sidebar);
+  flex-shrink: 0;
+  
+  // -- [DIEDIT] --
+  // Lebar default diatur ke kondisi tertutup (collapsed).
+  width: var(--sidebar-width-collapsed); 
+  
   position: fixed;
   height: 100%;
   top: 0;
   left: 0;
   z-index: 999;
-  transition: width 0.3s ease;
+  
+  // Transisi yang sudah ada (ini bagus, kita pertahankan).
+  // Ganti 'ease' ke 'cubic-bezier' agar lebih mulus.
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // -- [DITAMBAHKAN] --
+  // Saat sidebar di-hover, lebarkan sesuai variabel.
+  &:hover {
+    width: var(--sidebar-width-expanded);
+  }
 }
 
 .layout-main-container {
-  flex: 1; /* isi sisa ruang */
-  margin-left: var(--width-sidebar);
+  flex: 1;
+  
+  // -- [DIEDIT] --
+  // Margin kiri default disesuaikan dengan sidebar yang tertutup.
+  margin-left: var(--sidebar-width-collapsed); 
+  
   display: flex;
   flex-direction: column;
-  transition: margin-left 0.3s ease, width 0.3s ease;
+  
+  // Transisi yang sudah ada (ini bagus, kita pertahankan).
+  // Ganti 'ease' ke 'cubic-bezier' agar lebih mulus.
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+// -- [ATURAN KUNCI DITAMBAHKAN] --
+// Saat .layout-sidebar di-hover, kita target saudaranya (.layout-main-container)
+// untuk ikut mengubah margin-left-nya. Ini membuat konten utama bergeser.
+.layout-sidebar:hover ~ .layout-main-container {
+  margin-left: var(--sidebar-width-expanded);
+}
+
 
 .layout-main {
   flex-grow: 1;
@@ -36,10 +69,9 @@
   overflow-y: auto;
 }
 
-/* Mode AI Chatbot (tanpa padding, tetap dibatasi sidebar & bottom nav) */
 .layout-main.no-padding {
   padding: 0;
-  background-color: #fff; // biar bersih
+  background-color: var(--color-dark, #1b1c1d); // Disesuaikan untuk chat
   border-top: none;
 }
 
@@ -50,6 +82,7 @@
 /* Responsive */
 @media (max-width: 991px) {
   .layout-sidebar {
+    // Sembunyikan total di mobile, logika hover tidak akan mengganggu.
     display: none !important;
   }
 
@@ -59,7 +92,7 @@
   }
 
   .layout-main {
-    padding-bottom: calc(var(--height-bottom-nav) + 1rem);
+    padding-bottom: calc(var(--height-bottom-nav, 60px) + 1rem);
   }
 
   .layout-bottom-nav {
